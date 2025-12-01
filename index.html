@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rocha</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #050505;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+            overflow: hidden;
+        }
+
+        #bgVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.25;
+        }
+
+        .hub {
+            text-align: center;
+            padding: 50px 60px;
+            background: rgba(10,10,10,0.75);
+            border: 1px solid #151515;
+            border-radius: 20px;
+            backdrop-filter: blur(6px);
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+            position: relative;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-image: url("avatar.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: 2px solid #1a1a1a;
+            margin: 0 auto 15px auto;
+        }
+
+        .name {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 5px;
+            transform: translateZ(20px);
+        }
+
+        .bio {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 25px;
+            transform: translateZ(15px);
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transform: translateZ(15px);
+        }
+
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 50px;
+            background: #0a0a0a;
+            border: 1px solid #151515;
+            border-radius: 10px;
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .link-btn:hover {
+            background: #0f0f0f;
+            border-color: #202020;
+            color: #fff;
+        }
+
+        .discord-wrapper {
+            position: relative;
+        }
+
+        .discord-tooltip {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: #888;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s ease;
+        }
+
+        .discord-wrapper:hover .discord-tooltip {
+            opacity: 1;
+            transform: scale(1) translateX(-50%);
+        }
+    </style>
+</head>
+
+<body>
+
+    <video id="bgVideo" autoplay muted loop>
+        <source src="background.mp4" type="video/mp4">
+    </video>
+
+    <div class="hub" id="hub">
+        <div class="avatar"></div>
+        <h1 class="name">rocha</h1>
+        <p class="bio">rocha • 13y • learning lua</p>
+
+        <div class="links">
+            <a href="https://www.roblox.com/pt/users/8124392769/profile" target="_blank" class="link-btn">
+                <i class="fas fa-gamepad"></i> Roblox
+            </a>
+
+            <div class="discord-wrapper">
+                <div class="discord-tooltip">rochafn</div>
+                <a href="#" class="link-btn" onclick="copyDiscord(event)">
+                    <i class="fab fa-discord"></i> Discord
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <audio id="bgMusic" autoplay>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const hub = document.getElementById('hub');
+
+        hub.addEventListener('mousemove', (e) => {
+            const rect = hub.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+            hub.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        hub.addEventListener('mouseleave', () => {
+            hub.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        });
+
+        function copyDiscord(e) {
+            e.preventDefault();
+            navigator.clipboard.writeText('rochafn');
+            const tooltip = document.querySelector('.discord-tooltip');
+            tooltip.textContent = 'copiado!';
+            tooltip.style.color = '#22c55e';
+            setTimeout(() => {
+                tooltip.textContent = 'rochafn';
+                tooltip.style.color = '#888';
+            }, 1500);
+        }
+
+        window.onload = () => {
+            const music = document.getElementById('bgMusic');
+            music.volume = 0.2;
+            music.play().catch(() => {});
+        };
+    </script>
+
+</body>
+</html>
